@@ -6,9 +6,9 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,14 +37,14 @@ class DynectRest
     @user_name = user_name
     @password = password
     @rest = RestClient::Resource.new('https://api2.dynect.net/REST/', :headers => { :content_type => 'application/json' })
-    @zone = zone 
+    @zone = zone
     login if connect
   end
 
   ##
   # Session Management
-  ## 
-  
+  ##
+
   # Login to Dynect - must be done before any other methods called.
   #
   # See: https://manage.dynect.net/help/docs/api2/rest/resources/Session.html
@@ -74,7 +74,7 @@ class DynectRest
   #
   # @param [String] The zone to fetch - if one is provided when instantiated, we use that.
   # @return [Hash] The dynect API response
-  def get_zone(zone=nil)  
+  def get_zone(zone=nil)
     zone ||= @zone
     get("Zone/#{zone}")
   end
@@ -86,7 +86,7 @@ class DynectRest
   # @param [String] The zone to publish - if one is provided when instantiated, we use that.
   # @return [Hash] The dynect API response
   def publish(zone=nil)
-    zone ||= @zone 
+    zone ||= @zone
     put("Zone/#{zone}", { "publish" => true })
   end
 
@@ -97,7 +97,7 @@ class DynectRest
   # @param [String] The zone to freeze - if one is provided when instantiated, we use that.
   # @return [Hash] The dynect API response
   def freeze(zone=nil)
-    zone ||= @zone 
+    zone ||= @zone
     put("Zone/#{zone}", { "freeze" => true })
   end
 
@@ -108,7 +108,7 @@ class DynectRest
   # @param [String] The zone to thaw - if one is provided when instantiated, we use that.
   # @return [Hash] The dynect API response
   def thaw(zone=nil)
-    zone ||= @zone 
+    zone ||= @zone
     put("Zone/#{zone}", { "thaw" => true })
   end
 
@@ -145,6 +145,7 @@ class DynectRest
   # @param [String] The partial path to GET - for example, 'User' or 'Zone'.
   # @param [Hash] Additional HTTP headers
   def get(path_part, additional_headers = {}, &block)
+    path_part.sub!("RecordRecord", "Record")
     api_request { @rest[path_part].get(additional_headers, &block) }
   end
 
@@ -155,6 +156,7 @@ class DynectRest
   # @param [String] The partial path to DELETE - for example, 'User' or 'Zone'.
   # @param [Hash] Additional HTTP headers
   def delete(path_part, additional_headers = {}, &block)
+    path_part.sub!("RecordRecord", "Record")
     api_request { @rest[path_part].delete(additional_headers, &block) }
   end
 
@@ -168,6 +170,7 @@ class DynectRest
   # @param [Hash] The data structure to submit as the body, is automatically turned to JSON.
   # @param [Hash] Additional HTTP headers
   def post(path_part, payload, additional_headers = {}, &block)
+    path_part.sub!("RecordRecord", "Record")
     api_request { @rest[path_part].post(payload.to_json, additional_headers, &block) }
   end
 
@@ -181,6 +184,7 @@ class DynectRest
   # @param [Hash] The data structure to submit as the body, is automatically turned to JSON.
   # @param [Hash] Additional HTTP headers
   def put(path_part, payload, additional_headers = {}, &block)
+    path_part.sub!("RecordRecord", "Record")
     api_request { @rest[path_part].put(payload.to_json, additional_headers, &block) }
   end
 
@@ -208,7 +212,7 @@ class DynectRest
       response["msgs"].each do |error_message|
         error_messages << "#{error_message["LVL"]} #{error_message["ERR_CD"]} #{error_message["SOURCE"]} - #{error_message["INFO"]}"
       end
-      raise DynectRest::Exceptions::RequestFailed, "Request failed: #{error_messages.join("\n")}" 
+      raise DynectRest::Exceptions::RequestFailed, "Request failed: #{error_messages.join("\n")}"
     end
   end
 
