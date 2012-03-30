@@ -146,6 +146,7 @@ class DynectRest
   # @param [Hash] Additional HTTP headers
   def get(path_part, additional_headers = {}, &block)
     path_part.sub!("RecordRecord", "Record")
+    p path_part
     api_request { @rest[path_part].get(additional_headers, &block) }
   end
 
@@ -157,6 +158,7 @@ class DynectRest
   # @param [Hash] Additional HTTP headers
   def delete(path_part, additional_headers = {}, &block)
     path_part.sub!("RecordRecord", "Record")
+    p path_part
     api_request { @rest[path_part].delete(additional_headers, &block) }
   end
 
@@ -171,6 +173,7 @@ class DynectRest
   # @param [Hash] Additional HTTP headers
   def post(path_part, payload, additional_headers = {}, &block)
     path_part.sub!("RecordRecord", "Record")
+    p path_part
     api_request { @rest[path_part].post(payload.to_json, additional_headers, &block) }
   end
 
@@ -185,6 +188,7 @@ class DynectRest
   # @param [Hash] Additional HTTP headers
   def put(path_part, payload, additional_headers = {}, &block)
     path_part.sub!("RecordRecord", "Record")
+    p path_part
     api_request { @rest[path_part].put(payload.to_json, additional_headers, &block) }
   end
 
